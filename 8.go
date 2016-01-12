@@ -32,8 +32,8 @@ func main() {
 	Firstpass := true
 	lrg := 0
 	for i, _ := range series {
-		if i > 2 {
-			for j := 0; j < 4; j++ {
+		if i > 11 {
+			for j := 0; j < 13; j++ {
 				s1 := string(series[i-j])
 				i1, err := strconv.ParseInt(s1, 10, 0)
 				if err != nil { // check for error parsing the string into int
@@ -56,6 +56,6 @@ func main() {
 			}
 		}
 	}
-	fmt.Printf("largest product of four digits in the series is %d\n", lrg)
+	fmt.Printf("largest product of 13 digits in the series is %d\n", lrg)
 
 }
