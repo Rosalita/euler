@@ -6,13 +6,13 @@ import (
 
 func main() {
   var triangle, count, i, j int64
-	for  i = 11000; i < 12001; i++ {  // 2079 has 320, 5984 has 480,
+	for  i = 12375; i < 13001; i++ {  // 2079 has 320, 5984 has 480, 765765000 has 576
 		triangle = genTriangle(i)
     count = 0
 		    for j =1; j <= triangle; j++ {
 					 if triangle % j == 0 {
 						 count ++
-						 if count > 480{
+						 if count > 500{
 							 fmt.Printf("i= %d Triangle %d has %d divisors\n", i, triangle, count)
 							 return
 						 }
