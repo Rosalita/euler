@@ -2,22 +2,41 @@ package main
 
 import (
 	"fmt"
-  "io/ioutil"
-  "strings"
+	"io/ioutil"
+	"strconv"
+	"strings"
 )
 
-
 func main() {
-  data, err := ioutil.ReadFile("13.txt")
-  if err != nil {
-    panic(err)
-  }
+	data, err := ioutil.ReadFile("13.txt")
+	if err != nil {
+		panic(err)
+	}
 
-stringData := string(data)
-slicesOfRows := strings.Split(stringData, "\n")
+	stringData := string(data)
+	slicesOfRows := strings.Split(stringData, "\n")
 
-		fmt.Printf("first long number is %s\n", slicesOfRows[0])
-    fmt.Printf("second long number is %s\n", slicesOfRows[1])
-    fmt.Printf("third long number is %s\n", slicesOfRows[2])
+	// add the first digit in all the rows
 
+	fmt.Printf("sum of first digit in all rows is %d", addNthDigitFromAllRows(slicesOfRows, 0))
+
+}
+
+func addNthDigitFromAllRows(rows []string, n int) int64 {
+	var sum int64
+	for i := 0; i < 100; i++ {
+		number := getNthDigit(rows[i], 0)
+		sum = sum + number
+
+	}
+	return sum
+}
+
+func getNthDigit(myString string, n int) int64 {
+	digit := string(myString[n])
+	intdigit, ok := strconv.ParseInt(digit, 10, 0)
+	if ok != nil {
+		panic(ok)
+	}
+	return intdigit
 }
