@@ -10,15 +10,12 @@ func main() {
 	fmt.Scanln(&x)
 	fmt.Println("what is the value of y?")
 	fmt.Scanln(&y)
-  fx := float64(x)
+	fx := float64(x)
 	fy := float64(y)
-
-	fmt.Println(solveAnnoyingMaths(fx, fy))
-
+	fmt.Printf("answer is %.f \n", solveAnnoyingMaths(fx, fy))
 }
 
 func solveAnnoyingMaths(x float64, y float64) float64{
-
   xfac:= findFactorial(x)
 	yfac:= findFactorial(y)
 	total := x + y
