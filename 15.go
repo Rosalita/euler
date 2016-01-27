@@ -10,49 +10,25 @@ func main() {
 	fmt.Scanln(&x)
 	fmt.Println("what is the value of y?")
 	fmt.Scanln(&y)
+	fx := float64(x)
+	fy := float64(y)
+	fmt.Printf("answer is %.f \n", solveAnnoyingMaths(fx, fy))
+}
 
-	fmt.Printf("x is %d and y is %d\n", x, y)
+func solveAnnoyingMaths(x float64, y float64) float64{
+  xfac:= findFactorial(x)
+	yfac:= findFactorial(y)
+	total := x + y
+	totalfac:= findFactorial(total)
+  xyfac:= xfac * yfac
+	answer:= totalfac/xyfac
+		return answer
+}
 
-	journeyLen := x + y
-
-	//  for i:= 0; i < journeyLen; i++ {
-
-	//  if journeyLen = 1 // could have moved
-	// 1x
-	// 1y
-	// 2 paths
-
-	//     if journeyLen  = 2 // could have moved
-	// 1x + 1y
-	// 1y + 1x
-	// 2x
-	// 2y
-	// 4 paths
-
-	//   if journeyLen = 3 // could have moved
-	// 2x + 1y
-	// 1x + 1y +1x
-	// 1x + 2y
-	// 1y + 2x
-	// 1y + 1x + 1y
-	// 2y + 1x
-	// 6 paths
-
-	//   if journeyLen = 4 // could have moved
-	// 2x + 2y
-	// 2y + 2x
-	// 1x + 1y + 1x + 1y
-	// 1y + 1x + 1y + 1x
-	// 1x + 2y + 1x
-	// 1y + 2x + 1y
-	// 6 paths
-
-	for i := x; i >= 0; i-- {
-		fmt.Printf("x is %d\n", i)
-		journeyLeft := journeyLen - x
-
-		fmt.Printf("journey left is %d\n", journeyLeft)
-
-	}
-
+func findFactorial(x float64) float64{
+		 var i, fac float64 = 1, 1
+			for i = 1; i <= x; i++ {
+			fac = fac * i
+			}
+			return fac
 }
