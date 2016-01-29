@@ -21,55 +21,46 @@ func main() {
 
 	//  fmt.Printf(" %s %s %s %s %s",dict[1],dict[2],dict[3],dict[4],dict[5])
 
-	// start counting and add the names of the numbers to a string
+	// start counting and add the names of the numbers to a big long string
 	// use a buffer to add them because its much more efficient than using +=
 	// create this buffer using the Buffer type from package "bytes"
 	var buffer bytes.Buffer
 	var numberNames string
 
-	for i := 1; i <= 99; i++ { //start counting
+	for i := 1; i <= 1000; i++ { //start counting
 
-		if i < 21 { // for the first 20 numbers:
-			buffer.WriteString(dict[i]) //write name of each number into the buffer
-			continue                    // then continue to next number
-		}
-		if (i%10 == 0) && (i < 100) { // for numbers divisible by 10 that are less than 100
-			buffer.WriteString(dict[i]) // its name will be in the dictionary so just write it to buffer
-			continue                    // then continue to the next number
+		if i == 1000 {
+			buffer.WriteString(dict[1])
+			buffer.WriteString(dict[i])
 		}
 
-		if i < 100 { // for numbers less than 100 which havent been written yet
-			tens := i / 10
-			switch tens {
-			case 2:
-				buffer.WriteString(dict[20])
-				buffer.WriteString(dict[i-20])
-			case 3:
-				buffer.WriteString(dict[30])
-				buffer.WriteString(dict[i-30])
-			case 4:
-				buffer.WriteString(dict[40])
-				buffer.WriteString(dict[i-40])
-			case 5:
-				buffer.WriteString(dict[50])
-				buffer.WriteString(dict[i-50])
-			case 6:
-				buffer.WriteString(dict[60])
-				buffer.WriteString(dict[i-60])
-			case 7:
-				buffer.WriteString(dict[70])
-				buffer.WriteString(dict[i-70])
-			case 8:
-				buffer.WriteString(dict[80])
-				buffer.WriteString(dict[i-80])
-			case 9:
-				buffer.WriteString(dict[90])
-				buffer.WriteString(dict[i-90])
+		if i < 1000 {
+			hundreds := i / 100
+			tens := i/10 - (hundreds * 10)
+			units := i - (tens * 10) - (hundreds * 100)
+			tensandunits := (tens * 10) + units
+
+			if hundreds > 0 {
+				buffer.WriteString(dict[hundreds])
+				buffer.WriteString(dict[100])
+			}
+			if (hundreds > 0) && (tens > 0) || (hundreds > 0) && (units > 0) {
+				buffer.WriteString("and")
 			}
 
-			continue //then continue to the next number
-		}
+			if tens > 0 {
+				if (tensandunits > 10) && (tensandunits < 20) {
+					buffer.WriteString(dict[tensandunits])
+					continue
+				} else {
+					buffer.WriteString(dict[tens*10])
+				}
 
+			}
+			if units > 0 {
+				buffer.WriteString(dict[units])
+			}
+		}
 	}
 	numberNames = buffer.String() // take the value out of the buffer and put in a variable
 	fmt.Printf("numberNames is %s\n", numberNames)
