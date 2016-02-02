@@ -11,86 +11,105 @@ func main() {
 	var rawTriangleData []byte
 	var err error
 
+  // read the triangle to be solved from a text file
 	rawTriangleData, err = ioutil.ReadFile("triangle1.txt")
-
 	if err != nil {
 		panic(err)
 	}
+
+	//convert the raw bytes into string format
 	stringTriangleData := string(rawTriangleData)
+
+	//break the raw string down into a slice containing of rows of numbers
 	triangleRows := strings.Split(stringTriangleData, "\r\n")
 
-	for i := 14; i > 0; i-- {
+//	for i := 14; i > 0; i-- {
 
-		largestNeswSum, firstNesw, secondNesw, largestNwseSum, firstNwse, secondNwse, neswpos1, neswpos2, nwsepos1, nwsepos2 := getBiggestSums(i, triangleRows)
+	//	largestNeswSum, firstNesw, secondNesw, largestNwseSum, firstNwse, secondNwse, neswpos1, neswpos2, nwsepos1, nwsepos2 := getBiggestSums(i, triangleRows)
 
-		fmt.Printf("for row %d and %d:\n", i, i-1)
-		fmt.Printf("largest sw>ne sum is %d which is %d + %d at positions %d and %d\n", largestNeswSum, firstNesw, secondNesw, neswpos1, neswpos2)
-		fmt.Printf("largest se>nw sum is %d which is %d + %d at positions %d and %d\n", largestNwseSum, firstNwse, secondNwse, nwsepos1, nwsepos2)
+	//	fmt.Printf("for row %d and %d:\n", i, i-1)
+	//	fmt.Printf("largest sw>ne sum is %d which is %d + %d at positions %d and %d\n", largestNeswSum, firstNesw, secondNesw, neswpos1, neswpos2)
+	//	fmt.Printf("largest se>nw sum is %d which is %d + %d at positions %d and %d\n", largestNwseSum, firstNwse, secondNwse, nwsepos1, nwsepos2)
+//	}
+
+// test each of the values in the final row of the triangleRows
+// to find the path through largest values
+
+ for i := 0; i < len(triangleRows) -1; i ++ { // for each possible starting point in the final row ( 0 - 14)
+
+	  journey := getBiggestNumberPath(5, 14, triangleRows)
+	  fmt.Printf("journey is %s\n", journey)
+
+	  var totalJourney int64
+	  for i:= 0; i < len(journey); i++ {
+		  intVal, err := strconv.ParseInt(journey[i], 10, 64)
+		  if err != nil{
+		  	panic(err)
+		  }
+		  totalJourney += intVal
+  	}
+  	  fmt.Printf("Total Journey is %d\n", totalJourney)
+
 	}
-
-	journey := getBiggestNumberPath(9, 14, triangleRows)
-	fmt.Printf("journey is %s", journey)
 }
 
 func getBiggestNumberPath(startPoint, startRow int, triangleRows []string) (journey []string) {
-	nextPoint := 0
-	fmt.Printf("startpoint is %d\n", startPoint)
+  // take a slice of values from the starting row
 	rowSlice := strings.Split(triangleRows[startRow], " ")
-	fmt.Printf("value at start point is %s\n", rowSlice[startPoint])
-	// add the starting value to the journey
+
+	// add the starting point value in the starting row to the journey
 	journey = append(journey, rowSlice[startPoint])
 
-	//convert this value to an int and add it to the total
-	intVal, err := strconv.ParseInt(rowSlice[startPoint], 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	var total int64
-	total = total + intVal
+  for i:= startRow; i > 1; i -- { // loop from the starting row to the the penultimate row
 
-	prevRowSlice := strings.Split(triangleRows[startRow-1], " ")
-	// check which of the two values can move to is largest
-	fmt.Printf("can move to %s or %s\n", prevRowSlice[startPoint-1], prevRowSlice[startPoint])
-	// convert these string values to int64
-	option1, err := strconv.ParseInt(prevRowSlice[startPoint-1], 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	option2, err := strconv.ParseInt(prevRowSlice[startPoint], 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	if option1 > option2 {
-		journey = append(journey, prevRowSlice[startPoint-1])
-		nextPoint = startPoint - 1
-	} else {
-		journey = append(journey, prevRowSlice[startPoint])
-		nextPoint = startPoint
-	}
+		//get the slice of the current row
+		rowSlice = strings.Split(triangleRows[i], " ")
+    // get the slice of the previous row
+		prevRowSlice := strings.Split(triangleRows[i-1], " ")
 
-	// check the next point - possibly start looping back through points here
-	fmt.Printf("next point is %d\n", nextPoint)
-	nextSlice := strings.Split(triangleRows[startRow-1], " ")
-	fmt.Printf("value at next point is %s\n", nextSlice[nextPoint])
-	nextPrevRowSlice := strings.Split(triangleRows[startRow-2], " ")
-	// check which of the two values can move to is largest
-	fmt.Printf("can move to %s or %s\n", nextPrevRowSlice[nextPoint-1], nextPrevRowSlice[nextPoint])
-	// convert these string values to int64
-	option1, err = strconv.ParseInt(nextPrevRowSlice[nextPoint-1], 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	option2, err = strconv.ParseInt(nextPrevRowSlice[nextPoint], 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	if option1 > option2 {
-		journey = append(journey, nextPrevRowSlice[nextPoint-1])
-		nextPoint = nextPoint - 1
-	} else {
-		journey = append(journey, nextPrevRowSlice[nextPoint])
-	}
+		//if the starting point is at the end of the rowSlice, then only one move is available
+		if startPoint == len(rowSlice) -1 {
+   	// can only move to one possible open
+		// add this value to journey
+		  journey = append(journey, prevRowSlice[startPoint-1])
+			if startPoint != 0{
+			  startPoint -= 1  // dont let start point fall below 0!
+			}
+		   // start point must be decremented to stay in range of the slices
+		} else { // otherwise there are two moves available
 
+	  //convert the two string number for both these options to int64
+		    option1, err := strconv.ParseInt(prevRowSlice[startPoint-1], 10, 64)
+		     if err != nil {
+			    panic(err)
+		     }
+		     option2, err := strconv.ParseInt(prevRowSlice[startPoint], 10, 64)
+		     if err != nil {
+		     	panic(err)
+		     }
+	     	// compare the two choices
+       if option1 == option2 {
+				 fmt.Println("unable to decide which direction both values same")
+				 return
+			 }
+
+
+	     if option1 > option2 { // if option 1 is the largest number
+			  journey = append(journey, prevRowSlice[startPoint-1]) // add it to the journey
+				if startPoint != 0{ // bring the starting for the next loop in by 1
+				 startPoint -= 1  // but dont let start point fall below 0!
+				}
+		   } else {
+			   journey = append(journey, prevRowSlice[startPoint]) // add the other number to the journey
+		   }
+
+
+	  }
+		if i == 2 { // add the number at the very top of the triangle to the journey
+			rowSlice = strings.Split(triangleRows[0], " ")
+			journey = append(journey, rowSlice[0])
+		}
+	}
 	return journey
 }
 
