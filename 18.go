@@ -58,8 +58,8 @@ func getBiggestSum(triangleRows []string) string {
 
 			}
 
-			// if the second number checked is the biggest of the two, dd it to the updatednumber
-			if comparingNumbers[i+1] > comparingNumbers[i] {
+			// if the second number checked is greater than or equal to the first add it to the updatednumber
+			if comparingNumbers[i+1] >= comparingNumbers[i] {
 				// convert both strings to int
 				cnum, err := strconv.ParseInt(comparingNumbers[i+1], 10, 64)
 				if err != nil {
@@ -70,23 +70,6 @@ func getBiggestSum(triangleRows []string) string {
 					panic(err)
 				}
 
-				sum := int(cnum + unum) // add them together
-				s := strconv.Itoa(sum)  // convert back to string
-				updatingNumbers[i] = s  // store new value in updatingNumbers slice
-			}
-
-			// if both numbers checked are the same, add this number once to the updatednumber
-			if comparingNumbers[i+1] == comparingNumbers[i] {
-				// convert one of the strings checked to int
-				cnum, err := strconv.ParseInt(comparingNumbers[i+1], 10, 64)
-				if err != nil {
-					panic(err)
-				}
-				// and convert the number the string is being added with
-				unum, err := strconv.ParseInt(updatingNumbers[i], 10, 64)
-				if err != nil {
-					panic(err)
-				}
 				sum := int(cnum + unum) // add them together
 				s := strconv.Itoa(sum)  // convert back to string
 				updatingNumbers[i] = s  // store new value in updatingNumbers slice
