@@ -5,28 +5,27 @@ import (
 	"io/ioutil"
 	"sort"
 	"strings"
+  "time"
 )
 
 func main() {
+  start := time.Now()
 	data, err := ioutil.ReadFile("names.txt") // read in the data from text file
-	handleError(err)                          // if there is an error, handle it
+  if err != nil { // if there is an error, handle it
+		panic(err)
+	}
 	strData := string(data)                   // convert the []uint8 bytes of data to a string
 	strData = strData[1 : len(strData)-1]     // remove first and last characters
 	names := strings.Split(strData, "\",\"")  // split the data on "," into []string
 	sort.Strings(names)                       // sort the names into alphabetical order
-	totalScore := 0
-	for i, v := range names {
-		scoreLetters := scoreLetters(v)
-		nameScore := (i + 1) * scoreLetters
-		totalScore += nameScore
+	totalScore := 0 // initialise a total
+	for i, v := range names { // for each name
+		scoreLetters := scoreLetters(v) //score the letter
+		nameScore := (i + 1) * scoreLetters // multiply letter score by position
+		totalScore += nameScore // add name score to total
 	}
 	fmt.Println(totalScore)
-}
-
-func handleError(e error) {
-	if e != nil {
-		panic(e)
-	}
+  fmt.Println("Elapsed time : ", time.Since(start))
 }
 
 func scoreLetters(name string) int {
@@ -38,59 +37,7 @@ func scoreLetters(name string) int {
 }
 
 func getLetterValue(letter string) int {
-	switch letter {
-	case "A":
-		return 1
-	case "B":
-		return 2
-	case "C":
-		return 3
-	case "D":
-		return 4
-	case "E":
-		return 5
-	case "F":
-		return 6
-	case "G":
-		return 7
-	case "H":
-		return 8
-	case "I":
-		return 9
-	case "J":
-		return 10
-	case "K":
-		return 11
-	case "L":
-		return 12
-	case "M":
-		return 13
-	case "N":
-		return 14
-	case "O":
-		return 15
-	case "P":
-		return 16
-	case "Q":
-		return 17
-	case "R":
-		return 18
-	case "S":
-		return 19
-	case "T":
-		return 20
-	case "U":
-		return 21
-	case "V":
-		return 22
-	case "W":
-		return 23
-	case "X":
-		return 24
-	case "Y":
-		return 25
-	case "Z":
-		return 26
-	}
-	panic("unable to get a value for letter")
+letters := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+value := strings.Index(letters, letter)
+return value + 1
 }
