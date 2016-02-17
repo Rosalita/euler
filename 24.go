@@ -1,26 +1,92 @@
 package main
 
 import (
-  "fmt"
+	"fmt"
 )
 
-func main(){
-  fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
-  n:= 0
-  fmt.Println("To find the nth lexograpic permutation of 0123456789 enter n:")
-  fmt.Scanln(&n)
-  fmt.Printf("n is %d\n", n)
+func main() {
+	fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
+	n := 0
+	change := 0
+	fmt.Println("To find the nth lexograpic permutation of 0123456789 enter n:")
+	fmt.Scanln(&n)
 
 
- if n > 0 && n <= fac[2] {
-   fmt.Println("two digits must change")
- }
- if n > fac[2] && n <= fac[3] {
-   fmt.Println("three digits must change")
- }
- if n > fac[3] && n <= fac[4] {
-   fmt.Println("four digits must change")
- }
+
+	for i, _ := range fac {
+		if i == 10 {
+			break
+		}
+		if n > fac[i] && n <= fac[i+1] {
+			fmt.Printf("%d digits must change\n", i+1)
+			change = i + 1
+		}
+	}
+
+lexoperm := ""
+fmt.Println(lexoperm)
+
+
+
+}
+
+
+func setknown(change int) string{
+switch(change){
+case 10: return ""
+case 9: return "0"
+case 8: return "01"
+case 7: return "012"
+case 6: return "0123"
+case 5: return "01234"
+case 4: return "012345"
+case 3: return "0123456"
+case 2: return "01234567"
+}
+panic("dont know how many digits will change!")
+}
+
+func find10th(n int) string{
+  	fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
+  lexoperm := ""
+  for i :=0; i < 10; i++{ //i = 1 to 10
+    if i == 0 { // first time
+      if n > 0 && n <= fac[9] {
+       lexoperm = append(lexoperm, "0")
+      }
+    }
+    if i > 0{ // other times
+      if n > (i * fac[9]) +1 && n <= (i+1 * fac[9]) {
+        // convert i to string and add it to lexoperm
+       lexoperm = append(lexoperm, i)
+      }
+
+    }
+return lexoperm
+  }
+}
+
+// there are 3265920 perms that change 10 digits.
+//  9! will start with 0  | 0 to (9!)             = indexes 0       -  362880
+//  9! will start with 1  | (9! + 1) to 2(9!)     = indexes 362881  -  725760
+//  9! will start with 2  | (2(9!) + 1) to 3(9!)  = indexes 725761  - 1088640
+//  9! will start with 3  | (3(9!) + 1) to 4(9!)  = indexes 1088641 - 1451520
+//  9! will start with 4  | (4(9!) + 1) to 5(9!)  = indexes 1451521 - 1814400
+//  9! will start with 5  | (5(9!) + 1) to 6(9!)  = indexes 1814401 - 2177280
+//  9! will start with 6  | (6(9!) + 1) to 7(9!)  = indexes 2177281 - 2540160
+//  9! will start with 7  | (7(9!) + 1) to 8(9!)  = indexes 2540161 - 2903040
+//  9! will start with 8  | (8(9!) + 1) to 9(9!)  = indexes 2903041 - 3265920
+//  9! will start with 9  | (9(9!) + 1) to 10(9!) = indexes 3265921 - 3628800
+
+// if n > 0 && n <= fac[2] {
+//   fmt.Println("two digits must change")
+//}
+// if n > fac[2] && n <= fac[3] {
+//   fmt.Println("three digits must change")
+// }
+// if n > fac[3] && n <= fac[4] {
+//   fmt.Println("four digits must change")
+// }
 
 //number of permutations for 0123456789
 // 10 digits which can be arranged
@@ -124,7 +190,6 @@ func main(){
 //  9! will start with 8  | (8(9!) + 1) to 9(9!)  = indexes 2903041 - 3265920
 //  9! will start with 9  | (9(9!) + 1) to 10(9!) = indexes 3265921 - 3628800
 
-
 // so this means the 1,000,000th will start with a 2
 // next digit only has 9 possiblities so.. 8! = 40320
 // 8! will start with a 0 | (2(9!) + 0) to (2(9!) + (8!))          = indexes 725760 to 766080
@@ -140,5 +205,3 @@ func main(){
 // this means that the second digit of the 1,000,000th lexographic permutation is a 7
 // repeat the above step for 7! then add 2(9!) and  7(8!) to get the indexes
 // can possibly use case statement to check which range nth lexograpic permutation falls within
-
-}
