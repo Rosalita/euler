@@ -2,34 +2,29 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func main() {
 	fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
-	n := 0
+	n := 1000000
 	change := 0
-	fmt.Println("To find the nth lexograpic permutation of 0123456789 enter n:")
-	fmt.Scanln(&n)
-
-
-
 	for i, _ := range fac {
 		if i == 10 {
 			break
 		}
 		if n > fac[i] && n <= fac[i+1] {
-			fmt.Printf("%d digits must change\n", i+1)
 			change = i + 1
 		}
 	}
-
-lexoperm := ""
-fmt.Println(lexoperm)
-
+lexoperm := setknown(change)
+if change == 10 {
+	lexoperm = (find10th(n))
+  fmt.Println(find9th(n, lexoperm))
+}
 
 
 }
-
 
 func setknown(change int) string{
 switch(change){
@@ -47,36 +42,83 @@ panic("dont know how many digits will change!")
 }
 
 func find10th(n int) string{
-  	fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
+  fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
   lexoperm := ""
-  for i :=0; i < 10; i++{ //i = 1 to 10
-    if i == 0 { // first time
+  for i :=0; i < 10; i++{ //i = 0 to 9
+    if i == 0 { // first loop
       if n > 0 && n <= fac[9] {
-       lexoperm = append(lexoperm, "0")
+       lexoperm = lexoperm + "0"
       }
     }
-    if i > 0{ // other times
-      if n > (i * fac[9]) +1 && n <= (i+1 * fac[9]) {
-        // convert i to string and add it to lexoperm
-       lexoperm = append(lexoperm, i)
+    if i > 0 { // non-first loops
+      if n > (i * fac[9]) && n <= (i+1) * fac[9] {
+        s:= strconv.Itoa(i)
+       lexoperm = lexoperm + s
       }
-
     }
-return lexoperm
   }
+	return lexoperm
+
 }
 
-// there are 3265920 perms that change 10 digits.
-//  9! will start with 0  | 0 to (9!)             = indexes 0       -  362880
-//  9! will start with 1  | (9! + 1) to 2(9!)     = indexes 362881  -  725760
-//  9! will start with 2  | (2(9!) + 1) to 3(9!)  = indexes 725761  - 1088640
-//  9! will start with 3  | (3(9!) + 1) to 4(9!)  = indexes 1088641 - 1451520
-//  9! will start with 4  | (4(9!) + 1) to 5(9!)  = indexes 1451521 - 1814400
-//  9! will start with 5  | (5(9!) + 1) to 6(9!)  = indexes 1814401 - 2177280
-//  9! will start with 6  | (6(9!) + 1) to 7(9!)  = indexes 2177281 - 2540160
-//  9! will start with 7  | (7(9!) + 1) to 8(9!)  = indexes 2540161 - 2903040
-//  9! will start with 8  | (8(9!) + 1) to 9(9!)  = indexes 2903041 - 3265920
-//  9! will start with 9  | (9(9!) + 1) to 10(9!) = indexes 3265921 - 3628800
+func find9th(n int, lexoperm string) string{
+fac := []int{0, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800} // factorials of 0 to 10
+fmt.Printf("lexoperm passed is %s\n", lexoperm)
+// convert 10th from string s10 to int i10
+s10 := string(lexoperm[0])
+v, err := strconv.ParseInt(s10, 10, 64)
+if err != nil{
+	panic(err)
+}
+i10 := int(v)
+indexMod := i10 * fac[9]
+fmt.Printf("index mod is %v\n", indexMod)
+j := 0
+for i :=0; i < 10; i++{ //i = 0 to 9
+ fmt.Printf("i is %d\n", i)
+	if i == i10 { // if i is already in lexoperm
+		j -= 1
+		continue
+	}
+	if i == 0 { // first loop
+		if n >= indexMod && n <= indexMod + fac[8] {
+			fmt.Println("in 0")
+			s:= strconv.Itoa(j)
+		 lexoperm = lexoperm + s
+		 return lexoperm
+		}
+		j +=1
+	}
+	if i > 0 { // non-first loops
+
+		if n > indexMod + (j * fac[8]) && n <= indexMod + ((i+1) * fac[8]) {
+      fmt.Printf("%d is indexMod + (i * fac[8])\n", indexMod + (i * fac[8]))
+			fmt.Printf("%d is indexMod + ((i+1) * fac[8])\n", indexMod + ((i+1) * fac[8]))
+
+					fmt.Printf("j is %d\n", j)
+					s:= strconv.Itoa(j)
+	       lexoperm = lexoperm + s
+		}
+	}
+	j += 1
+ }
+
+
+return lexoperm
+}
+
+// next digit only has 9 possiblities so.. 8! = 40320
+// 8! will start with a 0 | (2(9!) + 0) to (2(9!) + (8!))          = indexes 725760 to 766080  j = 0
+// 8! will start with a 1 | (2(9!) + 8! + 1) to (2(9!) + 2(8!))    = indexes 766081 to 806400  j = 1
+// 8! will start with a 3 | (2(9!) + 2(8!) + 1) to (2(9!) + 3(8!)) = indexes 806401 to 846720
+// 8! will start with a 4 | (2(9!) + 3(8!) + 1) to (2(9!) + 4(8!)) = indexes 846721 to 887040
+// 8! will start with a 5 | (2(9!) + 4(8!) + 1) to (2(9!) + 5(8!)) = indexes 887041 to 927360
+// 8! will start with a 6 | (2(9!) + 5(8!) + 1) to (2(9!) + 6(8!)) = indexes 927361 to 967680
+// 8! will start with a 7 | (2(9!) + 6(8!) + 1) to (2(9!) + 7(8!)) = indexes 967681 to 1008000
+// 8! will start with a 8 | (2(9!) + 7(8!) + 1) to (2(9!) + 8(8!)) = indexes 1008001 to 1048320
+// 8! will start with a 9 | (2(9!) + 8(8!) + 1) to (2(9!) + 9(8!)) = indexes 1048321 to 1088640
+
+
 
 // if n > 0 && n <= fac[2] {
 //   fmt.Println("two digits must change")
@@ -203,5 +245,22 @@ return lexoperm
 // 8! will start with a 9 | (2(9!) + 8(8!) + 1) to (2(9!) + 9(8!)) = indexes 1048321 to 1088640
 
 // this means that the second digit of the 1,000,000th lexographic permutation is a 7
+
+// next digit only has 8 possibilities so.. 7! = 5040 | (2(9!)+ 7(!8))725760 + 282240
+
+// 7! will start with a 0 | (2(9!)+ 7(!8)) + 0) to (2(9!)+ 4(!8) + (7!))  = indexes 725760 to 766080
+// 8! will start with a 1 | (2(9!) + 8! + 1) to (2(9!) + 2(8!))    = indexes 766081 to 806400
+// 8! will start with a 3 | (2(9!) + 2(8!) + 1) to (2(9!) + 3(8!)) = indexes 806401 to 846720
+// 8! will start with a 4 | (2(9!) + 3(8!) + 1) to (2(9!) + 4(8!)) = indexes 846721 to 887040
+// 8! will start with a 5 | (2(9!) + 4(8!) + 1) to (2(9!) + 5(8!)) = indexes 887041 to 927360
+// 8! will start with a 6 | (2(9!) + 5(8!) + 1) to (2(9!) + 6(8!)) = indexes 927361 to 967680
+// 8! will start with a 7 | (2(9!) + 6(8!) + 1) to (2(9!) + 7(8!)) = indexes 967681 to 1008000
+// 8! will start with a 8 | (2(9!) + 7(8!) + 1) to (2(9!) + 8(8!)) = indexes 1008001 to 1048320
+// 8! will start with a 9 | (2(9!) + 8(8!) + 1) to (2(9!) + 9(8!)) = indexes 1048321 to 1088640
+
+
+
+
+
 // repeat the above step for 7! then add 2(9!) and  7(8!) to get the indexes
 // can possibly use case statement to check which range nth lexograpic permutation falls within
