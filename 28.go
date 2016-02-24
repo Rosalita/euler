@@ -38,13 +38,18 @@ if n%2 == 0 {
 // for sideW x constant and y changes
 // for sideN x changes and y constant
 
-// for round 2, 3*3 - 1*1 = 8 total numbers in the ring
-// for round 3, 5*5 - 3*3 = 16 total numbers in the ring
+// for ring 2 | 3*3 - 1*1 = 8 total numbers in the ring
+// for ring 3 | 5*5 - 3*3 = 16 total numbers in the ring
 
-//so potentially a 7*7 spiral will have, 7*7 - 5*5 =  24 total numbers in the ring
+//so potentially a 7*7 spiral will have, 7*7 - 5*5 =  24 total numbers in the outer ring
 // and ring 4: sideE: 6,1, 6,2  6,3, 6,4, 6,5  6,6
             // sideS: 5,6  4,6  3,6  2,6  1,6  0,6
             // sideW: 0,5  0,4  0,3  0,2  0,1  0,0
             // sideN: 1,0  2,0  3,0  4,0  5,0  6,0
 
-// formulas: total of numbers in outer ring =  n² - ((n-2))²
+// formula: total of numbers in outer ring of n*n grid |  r =  n² - ((n-2))²
+             // n² - (n-2)(n-2)
+             // n² - n(n-2) -2(n-2)
+             // n² - n² -2n -2n +4
+             // -r = -4n +4
+             // r = 4n -4
