@@ -6,26 +6,40 @@ import (
 
 func main(){
 
-genSpiral(5)
+genSpiral(3)
 
 }
 
 
 func genSpiral(n int) [][]int{
-grid := [][]int{}
+
+//rows := make([]int, n) // make a row slice as long as n
+grid := make([][]int, n, n)
+// initialise the grid
+for i, _ := range grid{
+  for j, _ := range grid{
+    fmt.Println(i, j)
+  }
+}
 
 if n%2 == 0 {
   fmt.Println("can only generate spirals for odd numbers")
   return grid
   }
-  x, y:= n/2, n/2
-  fmt.Println(x, y)
+//  x, y:= n/2, n/2 // coortinates of the central point in the spiral
+//  grid[x][y] = 1
+//  fmt.Println(x, y)
   for i:= 1; i <= n *n; i++{
 
-   fmt.Println(i)
+//   fmt.Println(i)
   }
 
  return grid
+}
+
+func printGrid(grid [][]int){
+fmt.Println(grid)
+  //for row := 0; row <
 }
 
 // spiral coordinates in x,y grid size 0 - 4
