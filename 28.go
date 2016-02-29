@@ -6,40 +6,48 @@ import (
 
 func main(){
 
-genSpiral(3)
+genSpiral(5)
 
 }
 
 
 func genSpiral(n int) [][]int{
 
-//rows := make([]int, n) // make a row slice as long as n
-grid := make([][]int, n, n)
-// initialise the grid
-for i, _ := range grid{
-  for j, _ := range grid{
-    fmt.Println(i, j)
+grid := make([][]int, n) // make a slice called grid to hold a slice for each row
+  for i := range grid { // for each item in grid slice
+    grid[i] = make([]int, n) // make a slice to represent the row
   }
-}
 
 if n%2 == 0 {
   fmt.Println("can only generate spirals for odd numbers")
-  return grid
-  }
-//  x, y:= n/2, n/2 // coortinates of the central point in the spiral
-//  grid[x][y] = 1
-//  fmt.Println(x, y)
-  for i:= 1; i <= n *n; i++{
-
-//   fmt.Println(i)
+  return grid // return an empty grid
   }
 
+x, y := n/2, n/2  // x,y is coords of the central point in the spiral
+grid[x][y] = 1
+
+totalrings := n/2 +1
+fmt.Printf("There are %d rings in total\n", totalrings)
+
+// set numbers 2 to n² in the grid
+//n2 := n * n  // find n²
+//for i:= 2; i <= n2; i++{
+//  fmt.Printf("adding %d to grid\n", i)
+//}
+
+
+ printGrid(grid)
  return grid
 }
 
 func printGrid(grid [][]int){
-fmt.Println(grid)
-  //for row := 0; row <
+  for row := 0; row < len(grid); row ++{
+    for col:=0; col < len(grid); col ++{
+      fmt.Printf(" %d",grid[row][col])
+    }
+    println()
+  }
+
 }
 
 // spiral coordinates in x,y grid size 0 - 4
@@ -67,3 +75,10 @@ fmt.Println(grid)
              // n² - n² -2n -2n +4
              // -r = -4n +4
              // r = 4n -4
+
+// formula: total number of rings (r) from n
+//  n = 9 | r = 5 | d -4   9 / 2 = 4.5 = int divide 9/2 = 4, then + 1
+//  n = 7 | r = 4 | d -3   7 / 2 = 3.5 = int divide 7/2 = 3, then + 1
+//  n = 5 | r = 3 | d -2
+//  n = 3 | r = 2 | d -1
+//  n = 1 | r = 1 | d 0
