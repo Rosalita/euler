@@ -23,21 +23,37 @@ if n%2 == 0 {
   return grid // return an empty grid
   }
 
-x, y := n/2, n/2  // x,y is coords of the central point in the spiral
-grid[x][y] = 1
-
 totalrings := n/2 +1
 fmt.Printf("There are %d rings in total\n", totalrings)
 
-// set numbers 2 to n² in the grid
-//n2 := n * n  // find n²
-//for i:= 2; i <= n2; i++{
-//  fmt.Printf("adding %d to grid\n", i)
-//}
-
-
+// just set the middle value which is the first ring as its always 1
+x, y := n/2, n/2  // x,y is coords of the central point in the spiral
+grid[x][y] = 1
+next := 2
  printGrid(grid)
- return grid
+println()
+m := len(grid)/2
+for ring:=2;ring <= totalrings; ring++ {
+      for i:= 0; i < ring; i ++{  // sideE: 2,3  3,3
+      grid[m+(ring-1)][m+i] = next
+      next++
+    }
+  //  for i:= 0; i < ring; i ++{  // sideS: 3,2  3,1
+  //    grid[m+(ring-1)][m-i] = next
+  //    next++
+  //  }
+  //  for i:= 0; i < ring; i ++{  // sideW: 2,1  1,1
+  //    grid[m+(ring-1)][m-i] = next
+  //    next++
+  //  }
+  //  for i:= 0; i < ring; i ++{  // sideN: 1,2  1,3
+  //    grid[m+(ring-1)][m-i] = next
+  //    next++
+  //  }
+  }
+ printGrid(grid)
+
+return grid
 }
 
 func printGrid(grid [][]int){
@@ -52,8 +68,8 @@ func printGrid(grid [][]int){
 
 // spiral coordinates in x,y grid size 0 - 4
 // ring 1: 2,2
-// ring 2: sideE: 3,2  3,3            sideS: 2,3  1,3            sideW: 1,2  1,1            sideN: 2,1  3,1
-// ring 3: sideE: 4,1, 4,2  4,3, 4,4  sideS: 3,4  2,4  1,4  0,4  sideW: 0,3  0,2  0,1  0,0  sideN: 1,0  2,0  3,0  4,0
+// ring 2: sideE: 2,3  3,3            sideS: 3,2  3,1            sideW: 2,1  1,1            sideN: 1,2  1,3
+// ring 3: sideE: 1,4, 2,4, 3,4, 4,4  sideS: 4,3  4,2  4,1  4,0  sideW: 3,0  2,0  1,0  0,0  sideN: 0,1  0,2  0,3  0,4
 
 // for sideE x constant and y changes
 // for sideS x changes and y constant
