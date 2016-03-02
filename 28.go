@@ -32,24 +32,29 @@ grid[x][y] = 1
 next := 2
  printGrid(grid)
 println()
-m := len(grid)/2
-for ring:=2;ring <= totalrings; ring++ {
-      for i:= 0; i < ring; i ++{  // sideE: 2,3  3,3
-      grid[m+(ring-1)][m+i] = next
-      next++
-    }
-  //  for i:= 0; i < ring; i ++{  // sideS: 3,2  3,1
-  //    grid[m+(ring-1)][m-i] = next
-  //    next++
-  //  }
-  //  for i:= 0; i < ring; i ++{  // sideW: 2,1  1,1
-  //    grid[m+(ring-1)][m-i] = next
-  //    next++
-  //  }
-  //  for i:= 0; i < ring; i ++{  // sideN: 1,2  1,3
-  //    grid[m+(ring-1)][m-i] = next
-  //    next++
-  //  }
+m := n/2
+fmt.Printf("m is %d\n",m)
+for r:=1; r <= (totalrings -1); r++ {
+
+  fmt.Println(r)
+  fmt.Println(r*2)
+      for i:= 0; i < r*2; i ++{  // ring 2 sideE: 2,3  3,3
+        if r!= 1{                // ring 3 sideE  1,4, 2,4, 3,4, 4,4
+          fmt.Printf("r is %d\n", r)
+          fmt.Printf("i is %d\n", i)
+          x = m + i -(r-1)
+          y = m + r
+          grid[x][y] = next
+          next ++
+          continue
+        }
+        fmt.Printf("r is %d\n", r)
+        fmt.Printf("i is %d\n", i)
+        x = m + i
+        y = m + r
+        grid[x][y] = next
+        next ++
+        }
   }
  printGrid(grid)
 
