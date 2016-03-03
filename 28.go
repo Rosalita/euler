@@ -36,8 +36,7 @@ m := n/2
 fmt.Printf("m is %d\n",m)
 for r:=1; r <= (totalrings -1); r++ {
 
-  fmt.Println(r)
-  fmt.Println(r*2)
+
       for i:= 0; i < r*2; i ++{  // ring 2 sideE: 2,3  3,3
         if r!= 1{                // ring 3 sideE  1,4, 2,4, 3,4, 4,4
           fmt.Printf("r is %d\n", r)
@@ -55,6 +54,31 @@ for r:=1; r <= (totalrings -1); r++ {
         grid[x][y] = next
         next ++
         }
+
+      for i:= r*2; i > 0; i --{  // ring 2 sideS: 3,2  3,1
+                                 // sideS: 4,3  4,2  4,1  4,0
+        if r!=1{
+          fmt.Printf("r is %d\n", r)
+          fmt.Printf("i is %d\n", i)
+          x = m + r
+          y = i - 1
+          fmt.Println(x, y)
+          grid[x][y] = next
+          next++
+          continue
+
+          }
+        fmt.Printf("r is %d\n", r)
+        fmt.Printf("i is %d\n", i)
+        x = m + r
+        y = i
+        fmt.Println(x, y)
+        grid[x][y] = next
+        next++
+
+      }
+
+
   }
  printGrid(grid)
 
