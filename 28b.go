@@ -5,7 +5,7 @@ import(
 )
 
 func main(){
-n:= 5
+n:= 1001
 diag:= make([]bool, (n*n) +1)
   diag[1] = true
 
@@ -20,23 +20,12 @@ for i, v := range diag{ // run through a slice of bools setting diagonal numbers
    mod = mod +2
    counter = 0
  }
-  fmt.Println(i,v)
 }
- counter = 0
+ counter = 0 // find the sum of all the true values
   for i, v := range diag{
    if v == true{
      counter += i
      }
   }
   fmt.Println(counter)
-
 }
-
-
-// diagonal numbers in 5*5
-// 1, 3, 5, 7, 9, 13, 17, 21, 25
-//   +2,+2,+2,+2, +4, +4, +4, +4
-
-// diagonal numbers in 7*7
-// as above plus  31, 37, 43, 49
-//                +6, +6, +6, +6
