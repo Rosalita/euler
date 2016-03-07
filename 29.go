@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math"
+  "math/big"
 	"sort"
 )
 
@@ -12,8 +12,13 @@ func main() {
 
 	for i := start; i <= end; i++ { // loop through all integers
 		for j := start; j <= end; j++ { // loop through all powers
-			pow := math.Pow(i, j)
-			terms = append(terms, pow)
+
+      big1:= big.NewInt(int64(i))
+      big2:= big.NewInt(int64(j))
+      bigAns:= big.NewInt(int64(1))
+      bigAns.Exp(big1, big2, nil)
+      fmt.Println(bigAns)
+
 		}
 	}
 	sort.Float64s(terms) // sort the terms in numerical order
