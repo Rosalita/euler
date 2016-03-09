@@ -16,50 +16,42 @@ func(n bigIntSlice) Swap(i,j int) { n[i], n[j] = n[j], n[i] }
 
 func main() {
 	var start, end int = 2, 5
-	var bigTerms bigIntSlice // slice of pointers to Int type from math/big package
+	init := big.NewInt(int64(0))
+	var bigTerms bigIntSlice
+	uniqueTerms := bigIntSlice{init} // slice of pointers to Int type from math/big package
 
 	for i := start; i <= end; i++ { // loop through all integers
 		for j := start; j <= end; j++ { // loop through all powers
       big1, big2, bigAns:= big.NewInt(int64(i)), big.NewInt(int64(j)), big.NewInt(int64(1))
       bigAns.Exp(big1, big2, nil)
-			bigTerms = append(bigTerms, bigAns)
+      bigTerms = append(bigTerms, bigAns)
 		}
 	}
 
-  sort.Sort(bigIntSlice(bigTerms)) // sort the terms into numerical order
-	fmt.Println(bigTerms)
-	fmt.Printf("there are %d bigTerms before deletion\n", len(bigTerms))
-	deleted := 0
-	finishflag := false
-	for i, _ := range bigTerms { // for each value in the slice of terms
-		if finishflag == true { // if flag to finish looping is true, use continue to skip any remaining values
-			continue
-		}
-		if i == 0 { // if first value, unable to compare it to previous value so skip it with continue
-			continue
-		}
-		// if anything has been deleted from the original slice, deleted will be > 0
-		// for each deletion the slice will be shorter so...
-		for d := 1; d <= deleted; d++ { //for each time a value was deleted
-			if i == len(bigTerms)-1-d { // if terms[i] would be at the index of (last value) - (number of items deleted)
-				finishflag = true // set finishflag to true
-				continue          // and skip this value
-			}
-		}
+	isPresent := false
+	for i, v := range uniqueTerms{ // check each value in the slice of bigTerms to see if bigAns is already there
+		fmt.Printf("uniqueTerm is %d\n", v)
+	   for i2, v2 := range bigTerms{
+			 fmt.Printf("bigTerm is %d\n", v2)
+			 if uniqueTerms[i] == bigTerms[i2] {
+				 isPresent = true
+			 }
+		   if isPresent != true {
+		     uniqueTerms = append(uniqueTerms, bigTerms[i2])
 
-		if bigTerms[i].Int64() == bigTerms[i-1].Int64() { // compare the value to the one before it and if its the same
-			fmt.Printf("deleting term [%d]\n", i)
-			bigTerms = append(bigTerms[:i], bigTerms[i+1:]...) // delete it by setting the slice to all values before and after the term to be removed
-			fmt.Println(bigTerms)
-			//fmt.Println(bigTerms2)
-
-			deleted++ // increment a counter of deleted items
-    }
+		     isPresent = false
+		     continue
+		   }
+		 }
 	}
-	fmt.Println(bigTerms)
+fmt.Println(bigTerms)
+fmt.Println(uniqueTerms)
+sort.Sort(bigIntSlice(bigTerms)) // sort the terms into numerical order
+
+//	fmt.Println(bigTerms)
       count := 0
       for _, _ = range(bigTerms){
         count ++
       }
-      fmt.Printf("There are %d distinct terms\n", count)
+      fmt.Printf("There are %d distinct terms\n", count -1) // don't count the 0 which was used to initialise the slice
 }
