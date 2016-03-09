@@ -16,9 +16,9 @@ func(n bigIntSlice) Swap(i,j int) { n[i], n[j] = n[j], n[i] }
 
 func main() {
 	var start, end int = 2, 5
-	init := big.NewInt(int64(0))
+
 	var bigTerms bigIntSlice
-	uniqueTerms := bigIntSlice{init} // slice of pointers to Int type from math/big package
+	var uniqueTerms bigIntSlice
 
 	for i := start; i <= end; i++ { // loop through all integers
 		for j := start; j <= end; j++ { // loop through all powers
@@ -28,30 +28,30 @@ func main() {
 		}
 	}
 
-	isPresent := false
-	for i, v := range uniqueTerms{ // check each value in the slice of bigTerms to see if bigAns is already there
-		fmt.Printf("uniqueTerm is %d\n", v)
-	   for i2, v2 := range bigTerms{
-			 fmt.Printf("bigTerm is %d\n", v2)
-			 if uniqueTerms[i] == bigTerms[i2] {
-				 isPresent = true
-			 }
-		   if isPresent != true {
-		     uniqueTerms = append(uniqueTerms, bigTerms[i2])
-
-		     isPresent = false
-		     continue
-		   }
-		 }
+for _, v := range bigTerms{
+	if !contains(uniqueTerms, v){
+		uniqueTerms = append(uniqueTerms, v)
 	}
-fmt.Println(bigTerms)
-fmt.Println(uniqueTerms)
-sort.Sort(bigIntSlice(bigTerms)) // sort the terms into numerical order
+}
 
-//	fmt.Println(bigTerms)
+sort.Sort(bigIntSlice(bigTerms)) // sort the terms into numerical order
+fmt.Println(bigTerms) // prints all terms found
+fmt.Println(uniqueTerms) // prints unique terms
+sort.Sort(bigIntSlice(uniqueTerms))
+fmt.Println(uniqueTerms) // prints unique terms
+
       count := 0
-      for _, _ = range(bigTerms){
+      for _, _ = range(uniqueTerms){
         count ++
       }
-      fmt.Printf("There are %d distinct terms\n", count -1) // don't count the 0 which was used to initialise the slice
+      fmt.Printf("There are %d distinct terms\n", count)
+
+}
+func contains(slice []*big.Int, x *big.Int) bool {
+    for _, v := range slice {
+        if v.Int64() == x.Int64() {
+            return true
+        }
+    }
+    return false
 }
