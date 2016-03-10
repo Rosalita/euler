@@ -15,7 +15,7 @@ func(n bigIntSlice) Less(i,j int) bool{ return n[i].Int64() < n[j].Int64() }
 func(n bigIntSlice) Swap(i,j int) { n[i], n[j] = n[j], n[i] }
 
 func main() {
-	var start, end int = 2, 5
+	var start, end int = 2, 100
 
 	var bigTerms bigIntSlice
 	var uniqueTerms bigIntSlice
@@ -24,6 +24,7 @@ func main() {
 		for j := start; j <= end; j++ { // loop through all powers
       big1, big2, bigAns:= big.NewInt(int64(i)), big.NewInt(int64(j)), big.NewInt(int64(1))
       bigAns.Exp(big1, big2, nil)
+			fmt.Printf(" %d ^ %d = big Ans is %d\n", big1, big2, bigAns)
       bigTerms = append(bigTerms, bigAns)
 		}
 	}
@@ -35,13 +36,16 @@ for _, v := range bigTerms{
 }
 
 sort.Sort(bigIntSlice(bigTerms)) // sort the terms into numerical order
-fmt.Println(bigTerms) // prints all terms found
-fmt.Println(uniqueTerms) // prints unique terms
-sort.Sort(bigIntSlice(uniqueTerms))
-fmt.Println(uniqueTerms) // prints unique terms
+//fmt.Println(bigTerms) // prints all terms found
+//fmt.Println()
+//fmt.Println(uniqueTerms) // prints unique terms
+//fmt.Println()
+//sort.Sort(bigIntSlice(uniqueTerms))
+//fmt.Println(uniqueTerms) // prints unique terms
 
       count := 0
-      for _, _ = range(uniqueTerms){
+      for i, v := range(uniqueTerms){
+				fmt.Println(i, v)
         count ++
       }
       fmt.Printf("There are %d distinct terms\n", count)
