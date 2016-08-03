@@ -1,2 +1,5 @@
 # euler
-Golang solutions for projecteuler.net
+
+Solutions for projecteuler.net
+
+Written in R & Golang
